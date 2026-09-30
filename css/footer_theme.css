@@ -7,7 +7,7 @@
     --footer-text-soft: rgba(0, 0, 0, 0.4);
 }
 
-[data-theme='light']:root {
+[data-theme='light']:root, :root {
     --footer-bg: rgb(0, 0, 0);
     --footer-link-color: rgba(255, 255, 255, 0.9);
     --subscribe-input-bg-color: rgba(255, 255, 255, 0.1);

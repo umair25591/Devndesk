@@ -70,7 +70,8 @@
 }
 
 .grax_tm_copyright{
-	background-color: black !important;
+	background: linear-gradient(to bottom, transparent 180px, #000 180px) !important;
+	position: relative;
 }
 
 .mil-footer-menu ul li a {
@@ -91,28 +92,14 @@
 }
 
 .my_wave {
-  /* background: radial-gradient(ellipse at bottom, #314256 0%, #0d101e 100%); */
+  background: transparent !important;
   position: absolute;
   top: 0;
   left: 0px;
   width: 100%;
 }
 
-[data-theme='dark'] .contactSubBody {
-  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
-}
 
-[data-theme='light'] .contactSubBody {
-  background-color: #ffffff;
-}
-
-[data-theme='dark'] .my_wave {
-  background: radial-gradient(ellipse at bottom, #314256 0%, #0d101e 100%);
-}
-
-[data-theme='light'] .my_wave {
-  background-color: #ffffff;
-}
 
 .mil-frame-top .mil-logo-front {
   color: var(--logo-color) !important;
