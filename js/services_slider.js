@@ -103,7 +103,8 @@ tpj(document).ready(function () {
         }
 
         // BEFORE/AFTER INITIALISATION
-        RevSliderBeforeAfter(tpj, tpj("#rev_slider_346_1"), {
+        // (only when the add-on is loaded and a slide actually has before/after data)
+        if (typeof RevSliderBeforeAfter === "function" && tpj("#rev_slider_346_1 li[data-beforeafter]").length) RevSliderBeforeAfter(tpj, tpj("#rev_slider_346_1"), {
             arrowStyles: {
                 leftIcon: "icofont icofont-caret-left",
                 rightIcon: "icofont icofont-caret-right",

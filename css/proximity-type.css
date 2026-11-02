@@ -1,0 +1,146 @@
+/*
+ * "Designing a Better World Today" hero: letters swell as the pointer gets close.
+ * Type effect based on a CodePen by Pavel Troshkin (Reactive CSS), rebuilt here with a few lines of
+ * plain JS (js/proximity-type.js) so there is no extra runtime dependency.
+ * Everything is scoped to .pt-hero.
+ */
+
+@font-face {
+  font-family: "Roboto Flex";
+  src: url("https://fonts.gstatic.com/s/robotoflex/v30/NaNeepOXO_NexZs0b5QrzlOHb8wCikXpYqmZsWI-__OGbt8jZktqc2V3Zs0KvDLdBP8SBZtOs2IifRuUZQMsPJtUsR4DEK6cULNeUx9XgTnH37Ha_FIAp4Fm0PP1hw45DntW2x0wZGzhPmr1YNMYKYn9_1IQXGwJAiUJVUMdN5YUW4O8HtSoXjC79QRyaLshNDUf9-EmF8tqHbE.woff2")
+    format("woff2");
+  font-weight: 100 1000;
+  font-stretch: 25% 151%;
+  font-display: swap;
+}
+
+.pt-hero {
+  position: relative;
+  overflow: hidden;
+  color: #f3f2f7;
+  color: oklch(96% 0.01 280);
+}
+
+/* No background colour of its own: the site's .mil-dark-bg layer makes this section dark and also flips the
+   fixed header (logo + menu) to white while it is over the section. Its wrapper turns pointer events off. */
+.pt-hero .pt-stage {
+  pointer-events: all;
+}
+
+/* ---- the heading ---- */
+
+.pt-stage {
+  position: relative;
+  display: grid;
+  place-content: start center; /* heading sits right under the top padding instead of floating in the middle */
+  padding: 70px 4vmin 40px;
+  text-align: center;
+  cursor: crosshair;
+}
+
+/* soft light that follows the pointer. It lives on the section-wide wrapper (not on .pt-stage), so it is
+   never clipped at the edge of the heading block and can spill over the whole section. */
+.pt-hero .mi-invert-fix::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1; /* behind the letters and the about text */
+  /* theme accent (#D8FF36) glow */
+  background: radial-gradient(
+    40vmin circle at var(--sx, 50%) var(--sy, 50%),
+    rgba(216, 255, 54, 0.16),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 600ms;
+  pointer-events: none;
+}
+
+.pt-hero.is-hot .mi-invert-fix::before {
+  opacity: 1;
+}
+
+.pt-word {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  margin: 0;
+  font-family: "Roboto Flex", system-ui, sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 11vw, 180px);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.pt-line {
+  display: flex;
+  justify-content: center;
+}
+
+.pt-gap {
+  display: inline-block;
+  width: 0.28em;
+}
+
+.pt-l {
+  display: inline-block;
+  --k: 0; /* 0 = far from the pointer, 1 = right on it */
+  font-variation-settings:
+    "wght" calc(150 + 850 * var(--k)),
+    "wdth" calc(40 + 111 * var(--k)),
+    "opsz" 144;
+  /* resting: the site's muted grey-white; close to the pointer: the theme accent #D8FF36 */
+  color: rgba(255, 255, 255, 0.28);
+  color: color-mix(in srgb, #d8ff36 calc(var(--k) * 100%), rgba(255, 255, 255, 0.28));
+  translate: 0 calc(var(--k) * -0.08em);
+  text-shadow: 0 0 calc(var(--k) * 0.4em) rgba(216, 255, 54, calc(var(--k) * 0.55));
+  /* slow return = letters settle back when the pointer leaves */
+  transition:
+    font-variation-settings 900ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 900ms,
+    translate 900ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    text-shadow 900ms;
+}
+
+/* short transitions while the pointer is tracking, so the swell follows it without lag */
+.pt-stage.is-hot .pt-l {
+  transition-duration: 120ms;
+}
+
+/* ---- about us ---- */
+
+.pt-about {
+  position: relative;
+  padding: 20px 0 120px;
+}
+
+.pt-about .pt-label {
+  display: block;
+  margin-bottom: 24px;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.pt-about p {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media screen and (max-width: 992px) {
+  .pt-stage {
+    padding-top: 70px;
+  }
+
+  .pt-about {
+    padding-bottom: 90px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-l {
+    transition: none;
+    translate: none;
+  }
+}

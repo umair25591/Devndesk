@@ -1,0 +1,66 @@
+/*
+ * 3D glass buttons (js/glass-button.js).
+ * The link stays a normal, clickable <a>; once the script has drawn the glass slab on top of it
+ * (it adds .gb-on), the link's own background, text and arrow are hidden and only its box is used.
+ * Without WebGL / JS the buttons simply keep their normal look.
+ */
+
+.gb.gb-on {
+  position: relative;
+  height: 60px !important;
+  padding: 0 34px !important;
+  border-radius: 18px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  transform: none !important;
+  overflow: visible !important;
+  /* normalise the two button styles (.mil-button / .mil-link) so both slabs share one geometry */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: transparent !important;
+}
+
+.gb.gb-on span {
+  color: transparent !important;
+  white-space: nowrap;
+}
+
+/* the arrow is only a placeholder: it keeps the layout, the arrow itself is drawn in 3D */
+.gb.gb-on svg {
+  visibility: hidden !important;
+  width: 16px !important;
+  height: 16px !important;
+  margin-left: 14px !important;
+  padding: 0 !important;
+  background: none !important;
+  transform: none !important;
+}
+
+.gb.gb-on:hover {
+  filter: none !important;
+  transform: none !important;
+}
+
+.gb.gb-on:focus-visible {
+  outline: 2px solid #d8ff36;
+  outline-offset: 4px;
+}
+
+.gb-canvas {
+  position: absolute;
+  display: block;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 992px) {
+  .gb.gb-on {
+    height: 56px !important;
+    padding: 0 28px !important;
+  }
+}

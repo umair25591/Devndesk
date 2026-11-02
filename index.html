@@ -23,6 +23,16 @@
     <link rel="stylesheet" href="css/bulb.css">
     <link rel="stylesheet" href="css/footer_theme.css">
     <link rel="stylesheet" href="css/carousel3d.css">
+    <link rel="stylesheet" href="css/proximity-type.css">
+    <link rel="stylesheet" href="css/glass-button.css">
+
+    <!-- three.js for the hero cubes background (js/hero-cubes.js) -->
+    <script type="importmap">
+    {"imports":{
+      "three":"https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js",
+      "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.178.0/examples/jsm/"
+    }}
+    </script>
 
 </head>
 <style>
@@ -68,6 +78,75 @@
             0 0 30px rgba(0, 0, 0, 0.4),
             0 0 40px rgba(0, 0, 0, 0.2);
     }
+
+    /* hero: bright studio backdrop with black chrome cubes (js/hero-cubes.js) */
+    #home {
+        position: relative;
+        /* own stacking context: keeps the slider's z-indexes from leaking over the next section
+           (which relies on a backdrop-filter) while letting the text blend with the cubes */
+        z-index: 0;
+        background: radial-gradient(120% 90% at 50% 38%, #fbfbf9 0%, #e9e9e5 55%, #d6d6d1 100%);
+    }
+
+    #home .hero-cubes-gl {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        display: block;
+        z-index: 0;
+    }
+
+    #home.nogl .hero-cubes-gl {
+        display: none;
+    }
+
+    /* The slider sits above the canvas but must NOT create a stacking context, otherwise the
+       blend modes below can't "see" the cubes behind the text. */
+    #home .rev_slider_wrapper {
+        z-index: auto !important;
+        background: transparent !important;
+    }
+
+    #home .tp-revslider-slidesli {
+        z-index: auto !important;
+    }
+
+    /* DEVNDESK text: invert over the backdrop (dark on light, white over the black cubes) */
+    #home .tp-parallax-wrap:has(#slide-964-layer-1) {
+        mix-blend-mode: difference !important;
+    }
+
+    /* "Make a choice" button: its overlay blend washes out on a light backdrop */
+    #home .tp-parallax-wrap:has(#slide-964-layer-46) {
+        mix-blend-mode: normal !important;
+    }
+
+    /* let the cubes show through the slider's own slide background */
+    #home .tp-bgimg {
+        background: transparent !important;
+    }
+
+    /* footer: grey, with the animated wave as its top edge.
+       Variables are set on <footer> so they win over both light/dark theme values. */
+    footer {
+        --footer-bg: #1f1f1f;
+        --footer-wave: #ffffff;
+        --footer-link-color: rgba(255, 255, 255, 0.9);
+        --subscribe-input-bg-color: rgba(255, 255, 255, 0.1);
+        --social-icon-color: #ffffff;
+        --footer-text-soft: rgba(255, 255, 255, 0.4);
+    }
+
+    /* the strip behind the wave takes the colour of the section above (black carousel),
+       and the wave itself takes the footer colour, so there is no grey band in between */
+    footer .home_wave {
+        background-color: #000;
+    }
+
+    footer .home_wave #wave_img {
+        fill: #1f1f1f !important;
+    }
 </style>
 
 <body>
@@ -106,8 +185,9 @@
 
 
         <div class="remove-padding transition-none" id="home">
+            <canvas class="hero-cubes-gl" aria-hidden="true"></canvas>
             <div id="rev_slider_346_1_wrapper" class="rev_slider_wrapper fullscreen-container"
-                data-alias="beforeafterslider1" data-source="gallery" style="background:#252525;padding:0px;">
+                data-alias="beforeafterslider1" data-source="gallery" style="background:transparent;padding:0px;">
                 <!-- START REVOLUTION SLIDER 5.4.3.3 fullscreen mode -->
                 <div id="rev_slider_346_1" class="rev_slider fullscreenbanner" style="display:none;"
                     data-version="5.4.3.3">
@@ -117,8 +197,7 @@
                             data-masterspeed="default" data-thumb="http://server.local/revslider/wp-content/uploads/"
                             data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="" data-param2=""
                             data-param3="" data-param4="" data-param5="" data-param6="" data-param7="" data-param8=""
-                            data-param9="" data-param10="" data-description=""
-                            data-beforeafter='{"moveto":"50%|50%|50%|50%","bgColor":"linear-gradient(270deg, rgba(28,167,236,1) 0%, rgba(74,0,224,1) 100%)","bgType":"solid","bgImage":"","bgFit":"cover","bgPos":"center center","bgRepeat":"no-repeat","direction":"horizontal","easing":"Power2.easeInOut","delay":"500","time":"750","out":"fade","carousel":false,"bounceArrows":"infinite","bounceType":"repel","bounceAmount":"5","bounceSpeed":"1500","bounceEasing":"ease-in-out","bounceDelay":"750","shiftOffset":"10","shiftTiming":"300","shiftEasing":"ease","shiftDelay":"250"}'>
+                            data-param9="" data-param10="" data-description="">
                             <!-- MAIN IMAGE -->
                             <img src=""
                                 data-bgcolor='linear-gradient(90deg, rgba(203,186,204,1) 0%, rgba(36,57,73,1) 100%)'
@@ -127,88 +206,14 @@
                                 data-bgparallax="off" class="rev-slidebg" data-no-retina>
                             <!-- LAYERS -->
 
-                            <!-- LAYER NR. 1 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-3" id="slide-964-layer-37"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']"
-                                data-voffset="['-280','-280','-280','-280']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="image" data-beforeafter="before"
-                                data-responsive_offset="on"
-                                data-frames='[{"delay":500,"speed":2000,"frame":"0","from":"y:top;rX:-180deg;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 5;"><img src="img/object_macscreen_1-2.png"
-                                    alt="" data-ww="['1000px','1000px','1000px','500px']"
-                                    data-hh="['1000px','1000px','1000px','500']" width="2000" height="2000"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 2 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-4" id="slide-964-layer-23"
-                                data-x="['center','center','center','center']"
-                                data-hoffset="['-578','-578','-578','-221']"
-                                data-y="['middle','middle','middle','middle']"
-                                data-voffset="['-344','-344','-344','-194']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="image" data-beforeafter="before"
-                                data-responsive_offset="on"
-                                data-frames='[{"delay":600,"speed":2000,"frame":"0","from":"x:left;y:-500px;rZ:90deg;sX:1;sY:1;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 6;"><img src="img/object_plant_1.png"
-                                    alt="" data-ww="['375px','375px','375px','200px']"
-                                    data-hh="['375px','375px','375px','200px']" width="1500" height="1500"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 3 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-3" id="slide-964-layer-28"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['-70','-70','-70','-170']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="image"
-                                data-beforeafter="before" data-responsive_offset="on"
-                                data-frames='[{"delay":700,"speed":2000,"frame":"0","from":"x:-200px;y:bottom;rZ:90deg;sX:1;sY:1;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 7;"><img src="img/keyboard_apple.png"
-                                    alt="" data-ww="['600px','600px','600px','300px']"
-                                    data-hh="['600px','600px','600px','300px']" width="1600" height="1600"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 4 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-2" id="slide-964-layer-22"
-                                data-x="['center','center','center','center']" data-hoffset="['307','307','307','131']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['-59','-59','-59','-103']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="image"
-                                data-beforeafter="before" data-responsive_offset="on"
-                                data-frames='[{"delay":800,"speed":2000,"frame":"0","from":"x:200px;y:bottom;rZ:-180deg;sX:1;sY:1;","to":"o:1;rZ:-20;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 8;"><img src="img/object_macmouse_1.png"
-                                    alt="" data-ww="['250px','250px','250px','125px']"
-                                    data-hh="['250px','250px','250px','125px']" width="1000" height="1000"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 5 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-2" id="slide-964-layer-35"
-                                data-x="['center','center','center','center']"
-                                data-hoffset="['-296','-296','-296','-149']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['-67','-67','-67','-89']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="image"
-                                data-beforeafter="before" data-responsive_offset="on"
-                                data-frames='[{"delay":900,"speed":2000,"frame":"0","from":"x:left;y:200px;rZ:180deg;sX:1;sY:1;","to":"o:1;rZ:45;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 9;"><img src="img/object_glasses_2.png"
-                                    alt="" data-ww="['250px','250px','250px','125px']"
-                                    data-hh="['250px','250px','250px','125px']" width="1000" height="1000"
-                                    data-no-retina> </div>
-
                             <!-- LAYER NR. 6 -->
-                            <div class="tp-caption   tp-resizeme  tp-whiteshadow rs-parallaxlevel-5"
+                            <div class="tp-caption   tp-resizeme  tp-whiteshadow"
                                 id="slide-964-layer-1" data-x="['center','center','center','center']"
                                 data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']"
                                 data-voffset="['110','110','110','0']" data-fontsize="['120','120','120','60']"
                                 data-lineheight="['120','120','120','60']" data-letterspacing="['50','50','20','10']"
                                 data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
-                                data-beforeafter="before" data-responsive_offset="on"
+                                data-responsive_offset="on"
                                 data-frames='[{"delay":500,"speed":2000,"frame":"0","from":"opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"}]'
                                 data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
                                 data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
@@ -216,25 +221,12 @@
                                 style="z-index: 10; white-space: nowrap; font-size: 120px; line-height: 120px; font-weight: 800; color: #ffffff; letter-spacing: 52px;font-family: 'Raleway', sans-serif;text-transform:uppercase;">
                                 DEVNDESK </div>
 
-                            <!-- LAYER NR. 7 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-5" id="slide-964-layer-48"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['210','210','210','100']"
-                                data-width="['960','960','960','320']" data-height="none" data-whitespace="normal"
-                                data-type="text" data-beforeafter="before" data-responsive_offset="on"
-                                data-frames='[{"delay":600,"speed":2000,"frame":"0","from":"sX:1;sY:1;opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[5,5,5,5]"
-                                style="z-index: 11; min-width: 960px; max-width: 960px; white-space: normal; font-size: 13px; line-height: 20px; font-weight: 800; color: #ffffff; letter-spacing: 5px;font-family: 'Raleway', sans-serif;text-transform:uppercase;">
-                            </div>
-
                             <!-- LAYER NR. 8 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-4" id="slide-964-layer-46"
+                            <div class="tp-caption   tp-resizeme" id="slide-964-layer-46"
                                 data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
                                 data-y="['bottom','bottom','bottom','bottom']" data-voffset="['70','70','70','80']"
                                 data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
-                                data-beforeafter="before" data-responsive_offset="on"
+                                data-responsive_offset="on"
                                 data-frames='[{"delay":700,"speed":2000,"frame":"0","from":"sX:1;sY:1;opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgb(0,0,0);bg:rgb(255,255,255);"}]'
                                 data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
                                 data-paddingright="[40,40,40,40]" data-paddingbottom="[0,0,0,0]"
@@ -242,90 +234,6 @@
                                 style="z-index: 12; white-space: nowrap; font-size: 15px; line-height: 60px; font-weight: 700; color: #ffffff; letter-spacing: 5px;font-family: 'Raleway', sans-serif;background-color:rgb(101,101,101);cursor:pointer;">
                                 MAKE A CHOICE </div>
 
-                            <!-- LAYER NR. 9 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-3" id="slide-964-layer-38"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']"
-                                data-voffset="['-280','-280','-280','-280']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="image" data-beforeafter="after"
-                                data-responsive_offset="on"
-                                data-frames='[{"delay":2000,"speed":2000,"frame":"0","from":"y:top;rX:-180deg;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 13;"><img src="img/object_macscreen_2.png"
-                                    alt="" data-ww="['1000px','1000px','1000px','500px']"
-                                    data-hh="['1000px','1000px','1000px','500']" width="2000" height="2000"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 10 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-4" id="slide-964-layer-42"
-                                data-x="['center','center','center','center']" data-hoffset="['545','545','545','181']"
-                                data-y="['middle','middle','middle','middle']"
-                                data-voffset="['-203','-203','-203','-178']" data-width="none" data-height="none"
-                                data-whitespace="nowrap" data-type="image" data-beforeafter="after"
-                                data-responsive_offset="on"
-                                data-frames='[{"delay":2100,"speed":2000,"frame":"0","from":"x:right;y:-500px;rZ:-180deg;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 14;"><img src="img/object_coffee_1.png"
-                                    alt="" data-ww="['375px','375px','375px','170px']"
-                                    data-hh="['375px','375px','375px','170px']" width="1500" height="1500"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 11 -->
-                            <div class="tp-caption   tp-resizeme rs-parallaxlevel-3" id="slide-964-layer-45"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['-70','-70','-70','-170']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="image"
-                                data-beforeafter="after" data-responsive_offset="on"
-                                data-frames='[{"delay":2200,"speed":2000,"frame":"0","from":"x:-200px;y:bottom;rZ:90deg;sX:1;sY:1;","to":"o:1;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['inherit','inherit','inherit','inherit']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[0,0,0,0]" style="z-index: 15;"><img src="img/keyboard_apple.png"
-                                    alt="" data-ww="['600px','600px','600px','300px']"
-                                    data-hh="['600px','600px','600px','300px']" width="1600" height="1600"
-                                    data-no-retina> </div>
-
-                            <!-- LAYER NR. 12 -->
-                            <div class="tp-caption   tp-resizeme  tp-blackshadow rs-parallaxlevel-5"
-                                id="slide-964-layer-9" data-x="['center','center','center','center']"
-                                data-hoffset="['0','0','0','0']" data-y="['middle','middle','middle','middle']"
-                                data-voffset="['110','110','110','0']" data-fontsize="['120','120','120','60']"
-                                data-lineheight="['120','120','120','60']" data-letterspacing="['50','50','20','10']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
-                                data-beforeafter="after" data-responsive_offset="on"
-                                data-frames='[{"delay":2000,"speed":2000,"frame":"0","from":"sX:1;sY:1;opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[180,180,145,0]" data-blendmode="overlay"
-                                style="z-index: 16; white-space: nowrap; font-size: 120px; line-height: 120px; font-weight: 800; color: #ffffff; letter-spacing: 52px;font-family: 'Raleway', sans-serif;text-transform:uppercase;">
-                                DEVNDESK </div>
-
-                            <!-- LAYER NR. 13 -->
-                            <div class="caption   tp-resizeme rs-parallaxlevel-5" id="slide-964-layer-49"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['middle','middle','middle','middle']" data-voffset="['210','210','210','100']"
-                                data-width="['960','960','960','320']" data-height="none" data-whitespace="normal"
-                                data-type="text" data-beforeafter="after" data-responsive_offset="on"
-                                data-frames='[{"delay":2100,"speed":2000,"frame":"0","from":"sX:1;sY:1;opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"}]'
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[0,0,0,0]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[5,5,5,5]"
-                                style="z-index: 17; min-width: 960px; max-width: 960px; white-space: normal; font-size: 13px; line-height: 20px; font-weight: 400; color: #ffffff; letter-spacing: 5px;font-family: 'Raleway', sans-serif;text-transform:uppercase;">
-                            </div>
-
-                            <!-- LAYER NR. 14 -->
-                            <div class="tp-caption tp-resizeme rs-parallaxlevel-4 redirect-to-home" id="slide-964-layer-44"
-                                data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']"
-                                data-y="['bottom','bottom','bottom','bottom']" data-voffset="['70','70','70','80']"
-                                data-width="none" data-height="none" data-whitespace="nowrap" data-type="text"
-                                data-beforeafter="after" data-responsive_offset="on"
-                                data-frames='[{"delay":2200,"speed":2000,"frame":"0","from":"sX:1;sY:1;opacity:0;fb:40px;","to":"o:1;fb:0;","ease":"Power4.easeInOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fb:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Linear.easeNone","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgb(0,0,0);bg:rgb(255,255,255);"}]'
-                                data-textAlign="['center','center','center','center']" data-paddingtop="[0,0,0,0]"
-                                data-paddingright="[40,40,40,40]" data-paddingbottom="[0,0,0,0]"
-                                data-paddingleft="[45,45,45,45]" data-blendmode="overlay"
-                                style="z-index: 18; white-space: nowrap; font-size: 15px; line-height: 60px; font-weight: 700; color: #ffffff; letter-spacing: 5px;font-family: 'Raleway', sans-serif;background-color:rgb(101,101,101);cursor:pointer;">
-                                MAKE A CHOICE </div>
                         </li>
                         <!-- SLIDE  -->
 
@@ -339,71 +247,40 @@
         <div class="mil-content">
             <div id="swupMain" class="mil-main-transition">
 
-                <!-- banner -->
-                <section class="mil-banner mil-dark-bg">
+                <!-- banner: proximity-type heading + about us (css/proximity-type.css, js/proximity-type.js) -->
+                <section class="pt-hero mil-dark-bg">
                     <div class="mi-invert-fix">
-                        <div class="mil-animation-frame">
-                            <div class="mil-animation mil-position-1 mil-scale" data-value-1="7" data-value-2="1.6">
-                            </div>
-                            <div class="mil-animation mil-position-2 mil-scale" data-value-1="4" data-value-2="1"></div>
-                            <div class="mil-animation mil-position-3 mil-scale" data-value-1="1.2" data-value-2=".1">
-                            </div>
-                        </div>
 
-                        <div class="mil-gradient"></div>
+                    <div class="pt-stage">
+                        <h1 class="pt-word" aria-label="We are Dev N Desk">
+                            <span class="pt-line" aria-hidden="true"><span class="pt-l">W</span><span class="pt-l">E</span><span class="pt-gap"></span><span class="pt-l">A</span><span class="pt-l">R</span><span class="pt-l">E</span></span>
+                            <span class="pt-line" aria-hidden="true"><span class="pt-l">D</span><span class="pt-l">E</span><span class="pt-l">V</span><span class="pt-gap"></span><span class="pt-l">N</span><span class="pt-gap"></span><span class="pt-l">D</span><span class="pt-l">E</span><span class="pt-l">S</span><span class="pt-l">K</span></span>
+                        </h1>
+                    </div>
 
-                        <div class="container">
-                            <!-- <div class="robot">
-                                <script type="module" src="https://unpkg.com/@splinetool/viewer@1.3.5/build/spline-viewer.js"></script>
-                                <spline-viewer url="https://prod.spline.design/AqtlWJlNbO-ZMkvz/scene.splinecode"></spline-viewer>
-                            </div> -->
-                            <div class="mil-banner-content mil-up">
+                    <div class="container">
+                        <div class="pt-about mil-up" id="about">
+                            <span class="pt-label">About us</span>
 
-                                <h1 class="mil-muted mil-mb-60">Designing <span class="mil-thin">a Better</span><br>
-                                    World <span class="mil-thin">Today</span></h1>
-                                <div class="row">
-                                    <div class="col-md-7 col-lg-5">
+                            <div class="row">
+                                <div class="col-md-8 col-lg-6">
 
-                                        <p class="mil-light-soft mil-mb-60">Welcome to our world of endless imagination
-                                            and boundless creativity. Together, let's embark on a remarkable journey
-                                            where dreams become tangible realities.</p>
+                                    <p class="mil-mb-60">Welcome to our world of endless imagination
+                                        and boundless creativity. Together, let's embark on a remarkable journey
+                                        where dreams become tangible realities.</p>
 
-                                    </div>
                                 </div>
-
-                                <a href="services.html" class="mil-button mil-arrow-place mil-btn-space">
-                                    <span>What we do</span>
-                                </a>
-
-                                <a href="portfolio-1.html" class="mil-link mil-muted mil-arrow-place">
-                                    <span>View works</span>
-                                </a>
-
-                                <div class="mil-circle-text">
-                                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                        xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 300 300"
-                                        enable-background="new 0 0 300 300" xml:space="preserve"
-                                        class="mil-ct-svg mil-rotate" data-value="360">
-                                        <defs>
-                                            <path id="circlePath"
-                                                d="M 150, 150 m -60, 0 a 60,60 0 0,1 120,0 a 60,60 0 0,1 -120,0 " />
-                                        </defs>
-                                        <circle cx="150" cy="100" r="75" fill="none" />
-                                        <g>
-                                            <use xlink:href="#circlePath" fill="none" />
-                                            <text style="letter-spacing: 6.5px">
-                                                <!-- circle text -->
-                                                <textPath xlink:href="#circlePath">Scroll down - Scroll down -
-                                                </textPath>
-                                            </text>
-                                        </g>
-                                    </svg>
-                                    <a href="#about"
-                                        class="mil-button mil-arrow-place mil-icon-button mil-arrow-down"></a>
-                                </div>
-
                             </div>
+
+                            <a href="services.html" class="mil-button mil-arrow-place mil-btn-space gb" data-glass-btn="lime">
+                                <span>What we do</span>
+                            </a>
+
+                            <a href="portfolio-1.html" class="mil-link mil-muted mil-arrow-place gb" data-glass-btn="clear">
+                                <span>View works</span>
+                            </a>
                         </div>
+                    </div>
                     </div>
                 </section>
                 <!-- banner end -->
@@ -555,136 +432,8 @@
 
                 
 
-                <!-- reviews -->
-                <section class="mil-soft-bg">
-                    <div class="container mil-p-120-120">
-
-                        <div class="row">
-                            <div class="col-lg-10">
-
-                                <span class="mil-suptitle mil-suptitle-right mil-suptitle-dark mil-up">Customer reviews
-                                    are a valuable source <br>of information for both businesses and consumers.</span>
-
-                            </div>
-                        </div>
-
-                        <h2 class="mil-center mil-up mil-mb-60">Customer <span class="mil-thin">Voices:</span> <br>Hear
-                            What <span class="mil-thin">They Say!</span></h2>
-
-                        <div class="mil-revi-pagination mil-up mil-mb-60"></div>
-
-                        <div class="row mil-relative justify-content-center">
-                            <div class="col-lg-8">
-
-                                <div class="mil-slider-nav mil-soft mil-reviews-nav mil-up">
-                                    <div class="mil-slider-arrow mil-prev mil-revi-prev mil-arrow-place"></div>
-                                    <div class="mil-slider-arrow mil-revi-next mil-arrow-place"></div>
-                                </div>
-
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"
-                                    class="mil-quote-icon mil-up">
-                                    <path
-                                        d="M 13.5 10 A 8.5 8.5 0 0 0 13.5 27 A 8.5 8.5 0 0 0 18.291016 25.519531 C 17.422273 29.222843 15.877848 31.803343 14.357422 33.589844 C 12.068414 36.279429 9.9433594 37.107422 9.9433594 37.107422 A 1.50015 1.50015 0 1 0 11.056641 39.892578 C 11.056641 39.892578 13.931586 38.720571 16.642578 35.535156 C 19.35357 32.349741 22 27.072581 22 19 A 1.50015 1.50015 0 0 0 21.984375 18.78125 A 8.5 8.5 0 0 0 13.5 10 z M 34.5 10 A 8.5 8.5 0 0 0 34.5 27 A 8.5 8.5 0 0 0 39.291016 25.519531 C 38.422273 29.222843 36.877848 31.803343 35.357422 33.589844 C 33.068414 36.279429 30.943359 37.107422 30.943359 37.107422 A 1.50015 1.50015 0 1 0 32.056641 39.892578 C 32.056641 39.892578 34.931586 38.720571 37.642578 35.535156 C 40.35357 32.349741 43 27.072581 43 19 A 1.50015 1.50015 0 0 0 42.984375 18.78125 A 8.5 8.5 0 0 0 34.5 10 z"
-                                        fill="#000000" />
-                                </svg>
-
-                                <div class="swiper-container mil-reviews-slider">
-                                    <div class="swiper-wrapper">
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Sarah Newman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">This creative agency stands out with their
-                                                    exceptional talent and expertise. Their ability to think outside the
-                                                    box and bring unique ideas to life is truly impressive. With
-                                                    meticulous attention to detail, they consistently deliver visually
-                                                    stunning and impactful work.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Emma Trueman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">I had the pleasure of working with this
-                                                    creative agency, and I must say, they truly impressed me. They
-                                                    consistently think outside the box, resulting in impressive and
-                                                    impactful work. I highly recommend this agency for their consistent
-                                                    delivery of exceptional creative solutions.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Sarah Newman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">This creative agency stands out with their
-                                                    exceptional talent and expertise. Their ability to think outside the
-                                                    box and bring unique ideas to life is truly impressive. With
-                                                    meticulous attention to detail, they consistently deliver visually
-                                                    stunning and impactful work.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Emma Trueman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">I had the pleasure of working with this
-                                                    creative agency, and I must say, they truly impressed me. They
-                                                    consistently think outside the box, resulting in impressive and
-                                                    impactful work. I highly recommend this agency for their consistent
-                                                    delivery of exceptional creative solutions.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Sarah Newman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">This creative agency stands out with their
-                                                    exceptional talent and expertise. Their ability to think outside the
-                                                    box and bring unique ideas to life is truly impressive. With
-                                                    meticulous attention to detail, they consistently deliver visually
-                                                    stunning and impactful work.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Emma Trueman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">I had the pleasure of working with this
-                                                    creative agency, and I must say, they truly impressed me. They
-                                                    consistently think outside the box, resulting in impressive and
-                                                    impactful work. I highly recommend this agency for their consistent
-                                                    delivery of exceptional creative solutions.</p>
-                                            </div>
-                                        </div>
-                                        <div class="swiper-slide">
-                                            <div class="mil-review-frame mil-center" data-swiper-parallax="-200"
-                                                data-swiper-parallax-opacity="0">
-                                                <h5 class="mil-up mil-mb-10">Sarah Newman</h5>
-                                                <p class="mil-mb-5 mil-upper mil-up mil-mb-30">Envato market</p>
-                                                <p class="mil-text-xl mil-up">This creative agency stands out with their
-                                                    exceptional talent and expertise. Their ability to think outside the
-                                                    box and bring unique ideas to life is truly impressive. With
-                                                    meticulous attention to detail, they consistently deliver visually
-                                                    stunning and impactful work.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-                <!-- reviews end -->
-
                 <!-- partners -->
+                <!--
                 <div class="mil-soft-bg">
                     <div class="container mil-p-0-120">
 
@@ -711,6 +460,7 @@
 
                     </div>
                 </div>
+                -->
                 <!-- partners end -->
 
                 <!-- footer -->
@@ -992,6 +742,9 @@
 <script src="js/revolution.extension.slideanims.min.js"></script>
 <script src="js/float_element.js"></script>
 <script type="module" src="./js/bulb.js"></script>
+<script type="module" src="./js/hero-cubes.js"></script>
+<script src="js/proximity-type.js"></script>
+<script type="module" src="./js/glass-button.js"></script>
 <script>
     $(".redirect-to-home, #slide-964-layer-46").on('click', function() {
         window.location.href = 'contact.html';
